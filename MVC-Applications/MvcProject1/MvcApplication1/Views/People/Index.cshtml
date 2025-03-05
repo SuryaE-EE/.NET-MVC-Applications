@@ -1,0 +1,29 @@
+﻿<h1>List of People</h1>
+
+@{
+	List<PersonModel>people = ViewBag.people;
+
+}
+
+<table class="table">
+
+	<tr>
+		<th>Id</th>
+		<th>PName</th>
+		<th>Gender</th>
+		<th>Age</th>
+	</tr>
+
+	@foreach (PersonModel p in people)
+	{
+
+		<tr>
+		<td>@p.Id</td>
+		<td>@p.PName</td>
+		<td>@p.Gender</td>
+		<td>@p.Age</td>
+		</tr>	
+	}
+
+
+</table>

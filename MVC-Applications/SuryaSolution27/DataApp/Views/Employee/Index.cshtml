@@ -1,0 +1,28 @@
+﻿<h1>List of Employees</h1>
+
+@{
+    List<EmployeeModel> employees = ViewBag.employees;
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name of The Employer</th>
+            <th>Job</th>
+            <th>Salary</th>
+            <th>Operations </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (EmployeeModel e in employees) {
+        <tr>
+            <td>@e.Id</td>
+            <td>@e.EName)</td>
+            <td>@e.Job)</td>
+            <td>@e.Salary</td>
+            <td><a asp-action="details" asp-route-id=@e.Id>Details</a></td>
+        </tr>
+}
+    </tbody>
+</table>

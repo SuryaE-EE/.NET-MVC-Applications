@@ -1,0 +1,108 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery CRUD Operations</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Employee Management</h1>
+
+    <h3>Add Employee</h3>
+    <input type="number" id="emp_id" placeholder="Employee ID">
+    <input type="text" id="ename" placeholder="Employee Name">
+    <input type="text" id="job" placeholder="Job">
+    <input type="number" id="salary" placeholder="Salary">
+    <button id="add">Add Employee</button>
+
+    <h3>Search Employee</h3>
+    <input type="number" id="search_id" placeholder="Enter Employee ID">
+    <button id="search">Search</button>
+    <div id="result"></div>
+
+    <h3>Update Employee</h3>
+    <input type="number" id="update_id" placeholder="Employee ID">
+    <input type="text" id="update_name" placeholder="New Name">
+    <input type="text" id="update_job" placeholder="New Job">
+    <input type="number" id="update_salary" placeholder="New Salary">
+    <button id="update">Update</button>
+
+    <h3>Delete Employee</h3>
+    <input type="number" id="delete_id" placeholder="Employee ID">
+    <button id="delete">Delete</button>
+
+    <h3>Employee List</h3>
+    <button id="fetch">Fetch All Employees</button>
+    <ul id="employees"></ul>
+
+    <script>
+        var apiUrl = "http://localhost:3000/employees";
+
+        // Create Employee with ID
+        $("#add").click(function() {
+            var employee = {
+                id: $("#emp_id").val(),
+                ename: $("#ename").val(),
+                job: $("#job").val(),
+                salary: $("#salary").val()
+            };
+            $.ajax({
+                url: apiUrl,
+                type: "POST",
+                data: JSON.stringify(employee),
+                contentType: "application/json",
+                success: function() { alert("Employee Added Successfully"); }
+            });
+        });
+
+        // Retrieve Employees
+        $("#fetch").click(function() {
+            $.getJSON(apiUrl, function(data) {
+                $("#employees").empty();
+                $.each(data, function(index, emp) {
+                    $("#employees").append("<li>" + emp.id + ": " + emp.ename + " - " + emp.job + " - " + emp.salary + "</li>");
+                });
+            });
+        });
+
+        // Search Employee by ID
+        $("#search").click(function() {
+            var id = $("#search_id").val();
+            $.getJSON(apiUrl + "/" + id, function(data) {
+                $("#result").html("ID: " + data.id + " Name: " + data.ename + ", Job: " + data.job + ", Salary: " + data.salary);
+            }).fail(function() {
+                alert("Employee Not Found");
+            });
+        });
+
+        // Update Employee
+        $("#update").click(function() {
+            var id = $("#update_id").val();
+            var updatedData = {
+                id: id,
+                ename: $("#update_name").val(),
+                job: $("#update_job").val(),
+                salary: $("#update_salary").val()
+            };
+            $.ajax({
+                url: apiUrl + "/" + id,
+                type: "PUT",
+                data: JSON.stringify(updatedData),
+                contentType: "application/json",
+                success: function() { alert("Employee Updated Successfully"); }
+            });
+        });
+
+        // Delete Employee
+        $("#delete").click(function() {
+            var id = $("#delete_id").val();
+            $.ajax({
+                url: apiUrl + "/" + id,
+                type: "DELETE",
+                success: function() { alert("Employee Deleted Successfully"); }
+            });
+        });
+    </script>
+</body>
+</html>
+
